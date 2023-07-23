@@ -1,17 +1,19 @@
 # Reading data from a SQL-SERVER/Oracle database
-
-
 import pyodbc as pyodbc
-
-# Defining the connection string
 conn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};'
-                        'Server=127.0.0.1;' 
+                        'Server=LAPTOP-MOSHUKNL\SQLEXPRESS;' 
                         'UID=sqladmin;'
                         'PWD=test@1234;'
                         'DataBase=master;'
                         'Trusted_Connection=yes')
-print(conn)
+#print(conn)
 
 # Fetching the data from the selected table using SQL query
-#RawData= pd.read_sql_query('''select * from [master].[dbo].[MSreplication_options]''', conn)
-#RawData.head()
+cursor=conn.cursor()
+cursor.execute('select top 10 [map_id] mapid,\
+       [src_dbms_id] sourcedbmsid,\
+       [dest_dbms_id] destinationdbmsid,\
+       [src_datatype_id] datatype,\
+       [src_len_min] lenght FROM [msdb].[dbo].[MSdbms_map]')
+for row in cursor:
+    print(row)
